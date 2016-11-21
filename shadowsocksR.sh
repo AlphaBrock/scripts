@@ -82,8 +82,8 @@ function pre_install(){
     fi
     # Set ShadowsocksR config password
     echo "Please input password for ShadowsocksR:"
-    read -p "(Default password: www.91yun.org):" shadowsockspwd
-    [ -z "$shadowsockspwd" ] && shadowsockspwd="www.91yun.org"
+    read -p "(Default password: alphabrock.cn):" shadowsockspwd
+    [ -z "$shadowsockspwd" ] && shadowsockspwd="alphabrock.cn"
     echo
     echo "---------------------------"
     echo "password = $shadowsockspwd"
@@ -238,7 +238,7 @@ function install_ss(){
     cd $cur_dir
     # unzip -q manyuser.zip
     # mv shadowsocks-manyuser/shadowsocks /usr/local/
-	git clone https://github.com/AlphaBrock/ssr-ml.git /usr/local/shadowsocks
+	git clone -b manyuser https://github.com/breakwa11/shadowsocks.git /usr/local/shadowsocks
     if [ -f /usr/local/shadowsocks/server.py ]; then
         chmod +x /etc/init.d/shadowsocks
         # Add run on system start up
@@ -279,7 +279,7 @@ function install_ss(){
 function check_datetime(){
 	rm -rf /etc/localtime
 	ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-	ntpdate 1.cn.pool.ntp.org
+	ntpdate 1.asia.pool.ntp.org
 }
 
 # Install cleanup
