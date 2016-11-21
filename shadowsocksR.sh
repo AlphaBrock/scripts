@@ -4,7 +4,6 @@ export PATH
 #=================================================================#
 #   System Required:  CentOS 6,7, Debian, Ubuntu                  #
 #   Description: One click Install ShadowsocksR Server            #
-#   Author: AlphaBrock <https://alphabrock.cn>                     #
 #   Thanks: @breakwa11 <https://twitter.com/breakwa11>            #
 #   Thanks: @Teddysun <i@teddysun.com>                            #
 #   Intro:  https://shadowsocks.be/9.html                         #
@@ -83,8 +82,8 @@ function pre_install(){
     fi
     # Set ShadowsocksR config password
     echo "Please input password for ShadowsocksR:"
-    read -p "(Default password: alphabrock.cn):" shadowsockspwd
-    [ -z "$shadowsockspwd" ] && shadowsockspwd="alphabrock.cn"
+    read -p "(Default password: www.91yun.org):" shadowsockspwd
+    [ -z "$shadowsockspwd" ] && shadowsockspwd="www.91yun.org"
     echo
     echo "---------------------------"
     echo "password = $shadowsockspwd"
@@ -126,12 +125,11 @@ function pre_install(){
     char=`get_char`
     # Install necessary dependencies
     if [ "$OS" == 'CentOS' ]; then
-        yum install -y wget unzip openssl-devel gcc swig python python-devel python-setuptools autoconf libtool libevent git ntpdate ntp
+        yum install -y wget unzip openssl-devel gcc swig python python-devel python-setuptools autoconf libtool libevent git ntpdate
         yum install -y m2crypto automake make curl curl-devel zlib-devel perl perl-devel cpio expat-devel gettext-devel
-        yum -y install ntpdate ntp
     else
         apt-get -y update
-        apt-get -y install python python-dev python-pip python-m2crypto curl wget unzip gcc swig automake make perl cpio build-essential git ntpdate ntp
+        apt-get -y install python python-dev python-pip python-m2crypto curl wget unzip gcc swig automake make perl cpio build-essential git ntpdate
     fi
     cd $cur_dir
 }
@@ -279,15 +277,16 @@ function install_ss(){
 
 #改成北京时间
 function check_datetime(){
-    service ntpd start
 	rm -rf /etc/localtime
 	ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-	ntpdate stdtime.sinica.edu.tw
+	ntpdate 1.cn.pool.ntp.org
 }
 
 # Install cleanup
 function install_cleanup(){
     cd $cur_dir
+    rm -f manyuser.zip
+    rm -rf shadowsocks-manyuser
     rm -f libsodium-1.0.10.tar.gz
     rm -rf libsodium-1.0.10
 }
