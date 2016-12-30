@@ -13,7 +13,7 @@ export PATH
 [ $(id -u) != "0" ] && { echo "${CFAILURE}错误：你必须以root用户运行此脚本${CEND}"; exit 1; }
 
 config_file="/usr/local/shadowsocksr/config.json"
-config_user_file="/usr/local/shadowsocksr/config.json"
+config_user_file="/usr/local/shadowsocksr/user-config.json"
 Libsodiumr_file="/root/libsodium-1.0.11"
 
 #检查系统
