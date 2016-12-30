@@ -82,7 +82,7 @@ function vm_check(){
     virt-what
     else
     apt-get update
-    apt-get install virt-what
+    apt-get install -y virt-what
     virt-what    
     fi
 }
