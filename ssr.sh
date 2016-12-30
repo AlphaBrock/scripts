@@ -13,7 +13,7 @@ export PATH
 [ $(id -u) != "0" ] && { echo "${CFAILURE}错误：你必须以root用户运行此脚本${CEND}"; exit 1; }
 
 config_file="/usr/local/shadowsocksr/config.json"
-config_user_file="/usr/local/shadowsocksr/user-config.json"
+config_user_file="/usr/local/shadowsocksr/config.json"
 Libsodiumr_file="/root/libsodium-1.0.11"
 
 #检查系统
@@ -237,19 +237,19 @@ setUser(){
 	echo "======================================="
 	echo
 	#询问是否设置 协议/混淆 兼容原版
-	if [ ${ssprotocol} != "origin" ];
-	then
-		if [ ${ssobfs} != "plain" ];
-		then
-			read -p "是否设置 混淆和协议 兼容原版 ( _compatible )? [Y/n] :" yn1
-			[ -z "${yn1}" ] && yn1="y"
-			if [[ $yn1 == [Yy] ]];
-			then
-				ssobfs=${ssobfs}"_compatible"
-				ssprotocol=${ssprotocol}"_compatible"
-			fi
-		fi
-	fi
+	#if [ ${ssprotocol} != "origin" ];
+	#then
+		#if [ ${ssobfs} != "plain" ];
+		#then
+			#read -p "是否设置 混淆和协议 兼容原版 ( _compatible )? [Y/n] :" yn1
+			#[ -z "${yn1}" ] && yn1="y"
+			#if [[ $yn1 == [Yy] ]];
+			#then
+				#ssobfs=${ssobfs}"_compatible"
+				#ssprotocol=${ssprotocol}"_compatible"
+			#fi
+		#fi
+	#fi
 	#最后确认
 	echo
 	echo "========================================="
@@ -275,13 +275,13 @@ viewUser(){
 	
 	getUser
 	#base64加密
-	SSRprotocol=`echo ${protocol} | sed 's/_compatible//g'`
-	SSRobfs=`echo ${obfs} | sed 's/_compatible//g'`
-	SSbase64=`echo -n "${method}:${password}@${ip}:${port}" | base64`
+	#SSRprotocol=`echo ${protocol} | sed 's/_compatible//g'`
+	#SSRobfs=`echo ${obfs} | sed 's/_compatible//g'`
+	#SSbase64=`echo -n "${method}:${password}@${ip}:${port}" | base64`
 	SSRPWDbase64=`echo -n "${password}" | base64`
 	SSRbase64=`echo -n "${ip}:${port}:${SSRprotocol}:${method}:${SSRobfs}:${SSRPWDbase64}" | base64`
-	SSurl="ss://"${SSbase64}
-	SSRurl="ssr://"${SSRbase64}
+	#SSurl="ss://"${SSbase64}
+	#SSRurl="ssr://"${SSRbase64}
 	SSQRcode="http://pan.baidu.com/share/qrcode?w=300&h=300&url="${SSurl}
 	SSRQRcode="http://pan.baidu.com/share/qrcode?w=300&h=300&url="${SSRurl}
 	clear
@@ -508,7 +508,7 @@ installSSR(){
 	
 	cd /usr/local
 	
-	git clone https://github.com/shadowsocksr/shadowsocksr
+	git clone https://github.com/shadowsocksr/shadowsocksr.git
 	
 	if [ ! -e $config_file ];
 	then
