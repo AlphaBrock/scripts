@@ -296,8 +296,8 @@ viewUser(){
 	echo -e "	协议: \033[42;37m ${protocol} \033[0m"
 	echo -e "	混淆: \033[42;37m ${obfs} \033[0m"
 	echo
-	echo -e "	SS链接: \033[42;37m ${SSurl} \033[0m"
-	echo -e "	SS二维码: \033[42;37m ${SSQRcode} \033[0m"
+	#echo -e "	SS链接: \033[42;37m ${SSurl} \033[0m"
+	#echo -e "	SS二维码: \033[42;37m ${SSQRcode} \033[0m"
 	echo -e "	SSR链接: \033[42;37m ${SSRurl} \033[0m"
 	echo -e "	SSR二维码: \033[42;37m ${SSRQRcode} \033[0m"
 	echo
