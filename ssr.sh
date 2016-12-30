@@ -136,8 +136,8 @@ setUser(){
 	done
 	#设置密码
 	echo "请输入ShadowsocksR账号的 密码:"
-	read -p "(默认密码: alphabrock.cn):" sspwd
-	[ -z "${sspwd}" ] && sspwd="alphabrock.cn"
+	read -p "(默认密码: 123456789):" sspwd
+	[ -z "${sspwd}" ] && sspwd="123456789"
 	echo
 	echo "========================================="
 	echo -e "	密码 : \033[41;37m ${sspwd} \033[0m"
@@ -175,27 +175,26 @@ setUser(){
 	echo
 	#设置协议
 	echo "请输入数字 来选择ShadowsocksR账号的 协议:"
-	echo "1. origin"
-	echo "2. verify_sha1"
-	echo "3. auth_sha1_v2"
-	echo "4. auth_sha1_v4"
-	echo "5. auth_aes128_md5"
-	echo "6. auth_aes128_sha1"
-	echo -e "\033[42;37m [Tip] \033[0m : 如果协议是origin，那么混淆也必须是plain !"
+	echo "1. verify_sha1"
+	echo "2. auth_sha1_v2"
+	echo "3. auth_sha1_v4"
+	echo "4. auth_aes128_md5"
+	echo "5. auth_aes128_sha1"
+	#echo -e "\033[42;37m [Tip] \033[0m : 如果协议是origin，那么混淆也必须是plain !"
 	echo
 	read -p "(默认协议: auth_sha1_v4):" ssprotocol
-	[ -z "${ssprotocol}" ] && ssprotocol="4"
+	[ -z "${ssprotocol}" ] && ssprotocol="3"
+	#if [ ${ssprotocol} == "1" ]; then
+		#ssprotocol="origin"
 	if [ ${ssprotocol} == "1" ]; then
-		ssprotocol="origin"
-	elif [ ${ssprotocol} == "2" ]; then
 		ssprotocol="verify_sha1"
-	elif [ ${ssprotocol} == "3" ]; then
+	elif [ ${ssprotocol} == "2" ]; then
 		ssprotocol="auth_sha1_v2"
-	elif [ ${ssprotocol} == "4" ]; then
+	elif [ ${ssprotocol} == "3" ]; then
 		ssprotocol="auth_sha1_v4"
-	elif [ ${ssprotocol} == "5" ]; then
+	elif [ ${ssprotocol} == "4" ]; then
 		ssprotocol="auth_aes128_md5"
-	elif [ ${ssprotocol} == "6" ]; then
+	elif [ ${ssprotocol} == "5" ]; then
 		ssprotocol="auth_aes128_sha1"
 	else
 		ssprotocol="auth_sha1_v4"
@@ -213,10 +212,10 @@ setUser(){
 		echo "2. http_post"
 		echo "3. random_head"
 		echo "4. tls1.2_ticket_auth"
-		echo -e "\033[42;37m [Tip] \033[0m : 如果协议是origin，那么混淆也必须是plain !"
+		#echo -e "\033[42;37m [Tip] \033[0m : 如果协议是origin，那么混淆也必须是plain !"
 		echo
-		read -p "(默认混淆: tls1.2_ticket_auth):" ssobfs
-		[ -z "${ssobfs}" ] && ssobfs="4"
+		read -p "(默认混淆: http_simple):" ssobfs
+		[ -z "${ssobfs}" ] && ssobfs="1"
 		if [ ${ssobfs} == "1" ]; then
 			ssobfs="http_simple"
 		elif [ ${ssobfs} == "2" ]; then
@@ -226,10 +225,8 @@ setUser(){
 		elif [ ${ssobfs} == "4" ]; then
 			ssobfs="tls1.2_ticket_auth"
 		else
-			ssobfs="tls1.2_ticket_auth"
+			ssobfs="http_simple"
 		fi
-	else
-		ssobfs="plain"
 	fi
 	echo
 	echo "======================================="
@@ -275,14 +272,14 @@ viewUser(){
 	
 	getUser
 	#base64加密
-	#SSRprotocol=`echo ${protocol} | sed 's/_compatible//g'`
-	#SSRobfs=`echo ${obfs} | sed 's/_compatible//g'`
-	#SSbase64=`echo -n "${method}:${password}@${ip}:${port}" | base64`
+	SSRprotocol=`echo ${protocol} | sed 's/_compatible//g'`
+	SSRobfs=`echo ${obfs} | sed 's/_compatible//g'`
+	SSbase64=`echo -n "${method}:${password}@${ip}:${port}" | base64`
 	SSRPWDbase64=`echo -n "${password}" | base64`
 	SSRbase64=`echo -n "${ip}:${port}:${SSRprotocol}:${method}:${SSRobfs}:${SSRPWDbase64}" | base64`
-	#SSurl="ss://"${SSbase64}
-	#SSRurl="ssr://"${SSRbase64}
-	SSQRcode="http://pan.baidu.com/share/qrcode?w=300&h=300&url="${SSurl}
+	SSurl="ss://"${SSbase64}
+	SSRurl="ssr://"${SSRbase64}
+	#SSQRcode="http://pan.baidu.com/share/qrcode?w=300&h=300&url="${SSurl}
 	SSRQRcode="http://pan.baidu.com/share/qrcode?w=300&h=300&url="${SSRurl}
 	clear
 	echo "############################################################"
@@ -303,7 +300,7 @@ viewUser(){
 	echo
 	echo -e "提示："
 	echo -e "在浏览器中，打开上面的二维码链接，就可以看到二维码图片了"
-	echo -e "协议和混淆后面的[ _compatible ]，指的是兼容原版Shadowsocks协议混淆。"
+	#echo -e "协议和混淆后面的[ _compatible ]，指的是兼容原版Shadowsocks协议混淆。"
 	echo
 	echo "############################################################"
 }
@@ -444,7 +441,7 @@ del_firewall(){
 
 #安装软链，方便后续管理
 Install_Softlink(){
-wget -N --no-check-certificate -O /usr/local/bin/ssr https://soft.alphabrock.cn/Linux/scripts/ssr.sh
+wget -N --no-check-certificate -O /usr/local/bin/ssr https://raw.githubusercontent.com/AlphaBrock/scripts/master/ssr.sh
 chmod +x /usr/local/bin/ssr
  }
 
