@@ -212,9 +212,9 @@ function config_shadowsocks(){
     "timeout": 120,
     "udp_timeout": 60,
     "method": "chacha20",
-    "protocol": "auth_sha1_compatible",
+    "protocol": "auth_sha1_v2",
     "protocol_param": "",
-    "obfs": "http_simple_compatible",
+    "obfs": "http_simple",
     "obfs_param": "",
     "dns_ipv6": false,
     "connect_verbose_info": 0,
@@ -238,7 +238,7 @@ function install_ss(){
     cd $cur_dir
     # unzip -q manyuser.zip
     # mv shadowsocks-manyuser/shadowsocks /usr/local/
-	git clone -b manyuser https://github.com/shadowsocksr/shadowsocksr.git /usr/local/shadowsocks
+	git clone https://github.com/shadowsocksr/shadowsocksr.git /usr/local/shadowsocks
     if [ -f /usr/local/shadowsocks/server.py ]; then
         chmod +x /etc/init.d/shadowsocks
         # Add run on system start up
