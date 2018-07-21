@@ -4,7 +4,7 @@ export PATH
 #=================================================================#
 #   System Required:  CentOS 6,7, Debian, Ubuntu                  #
 #   Description: One click To Install DNS Tunnel SSR Softether    #
-#   Author: AlphaBrock jcciam@outlook.com<i@teddysun.com>         #
+#   Author: AlphaBrock <jcciam@outlook.com>                       #
 #   Thanks: @Teddysun <i@teddysun.com>                            #
 #=================================================================#
 
