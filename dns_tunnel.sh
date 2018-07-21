@@ -3,10 +3,9 @@ PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 #=================================================================#
 #   System Required:  CentOS 6,7, Debian, Ubuntu                  #
-#   Description: One click Install ShadowsocksR Server            #
-#   Author: Teddysun <i@teddysun.com>                             #
-#   Thanks: @breakwa11 <https://twitter.com/breakwa11>            #
-#   Intro:  https://shadowsocks.be/9.html                         #
+#   Description: One click To Install DNS Tunnel SSR Softether    #
+#   Author: AlphaBrock jcciam@outlook.com<i@teddysun.com>         #
+#   Thanks: @Teddysun <i@teddysun.com>                            #
 #=================================================================#
 
 clear
@@ -634,7 +633,7 @@ install_hans(){
     com_hans
     #start hans 
     clear
-    read -p "Please input your password and press enter to continue:" passwd
+    read -p "Please input your password and Press enter to continue:" passwd
     echo -e "${green}your password is${plain}: ${passwd}"
     ./hans -s 10.1.2.0 -p ${passwd}
 
@@ -645,14 +644,47 @@ install_hans(){
     echo "---------------------------------------------"
     echo -e "${green}sudo ./hans -c server_address -p password${plain}"
     echo "---------------------------------------------"
-    echo -e "${red}Make sure your computer has been also compiler hans${plain}"
+    echo -e "${yellow}Make sure your computer has been also compiler hans${plain}"
     echo
 }
 
-# #Install Softether VPN
-# install_softether(){
+# compiler softether vpn
+com_softether(){
+    cd ${cur_dir}
+    wget  http://www.softether-download.com/files/softether/v4.27-9667-beta-2018.05.26-tree/Linux/SoftEther_VPN_Server/64bit_-_Intel_x64_or_AMD64/softether-vpnserver-v4.27-9667-beta-2018.05.26-linux-x64-64bit.tar.gz
+    tar xzf softether-vpnserver-v4.27-9667-beta-2018.05.26-linux-x64-64bit.tar.gz
+    cd vpnserver
+    make 
+}
+#Install Softether VPN
+install_softether(){
+    # Install necessary dependencies
+    if check_sys packageManager yum; then
+        yum install -y gcc gcc-c++ automake autoconf git wget 
+    elif check_sys packageManager apt; then
+        apt-get -y update
+        apt-get -y install build-essential git wget 
+    fi
 
-# }
+    com_softether
+
+    #start vpn server
+    ./vpnserver start
+    echo -e "${green}SoftEther VPN Server has been start${plain}"
+    
+    # set password
+    echo "------------------------ Information ------------------------"
+    echo "${green}In this moment,please input the number"1" three time${plain}"
+    echo "Then input command ${green}"ServerPasswordSet"${plain} to set password"
+    echo "Press any key to start...or Press Ctrl+C to cancel"
+    echo "-------------------------------------------------------------"
+    char=`get_char`
+    ./vpncmd
+
+    #cleanup
+    cd ${cur_dir}
+    rm -rf softether-vpnserver-v4.27-9667-beta-2018.05.26-linux-x64-64bit.tar.gz
+}
 
 	echo -e "  黑科技一键管理脚本
   ---- AlphaBrock | jcciam@outlook.com ----
