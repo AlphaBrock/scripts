@@ -346,11 +346,11 @@ install_shadowsocksr(){
 bbr_installation_status(){
     cd ${cur_dir}
     if [[ ! -e ${bbr_file} ]]; then
-        echo -e "${Error} 没有发现 BBR脚本，开始下载..."
+        echo -e "${red} 没有发现 BBR脚本，开始下载...${plain}"
         if ! wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh; then
-            echo -e "${Error} BBR 脚本下载失败 !" && exit 1
+            echo -e "${red} BBR 脚本下载失败 !${plain}" && exit 1
         else
-            echo -e "${Info} BBR 脚本下载完成 !"
+            echo -e "${green} BBR 脚本下载完成 !${plain}"
             chmod +x bbr.sh
         fi
     fi
