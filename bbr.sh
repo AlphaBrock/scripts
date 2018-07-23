@@ -4,10 +4,11 @@
 #
 # System Required:  CentOS 6+, Debian7+, Ubuntu12+
 #
-# Copyright (C) 2016-2018 Teddysun <i@teddysun.com>
+# Thanks: Teddysun <i@teddysun.com>
 #
 # URL: https://teddysun.com/489.html
 #
+# Author: AlphaBrock <jcciam@outlook.com>
 
 red='\033[0;31m'
 green='\033[0;32m'
@@ -274,7 +275,7 @@ install_bbr() {
         if [[ `getconf WORD_BIT` == "32" && `getconf LONG_BIT` == "64" ]]; then
             echo -e "\ndeb http://ftp.debian.org/debian jessie-backports main" >> /etc/apt/sources.list
             apt-get update -y
-            apt -t jessie-backports install linux-image-amd64
+            apt -t jessie-backports install linux-image-amd64 -y
         else
             echo -e "\ndeb http://ftp.debian.org/debian jessie-backports main" >> /etc/apt/sources.list
             apt-get update -y
@@ -282,7 +283,7 @@ install_bbr() {
         fi
     elif [[ x"${release}" == x"ubuntu" ]]; then
         if ubuntuVersion 12 ; then
-            echo -e "${red}Error:${plain} not supported Ubuntu 12."
+            echo -e "${red}Error:${plain} not supported Ubuntu 12"
             exit 1
         elif ubuntuVersion 14 ; then
             dl_kernel
