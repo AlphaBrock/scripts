@@ -22,17 +22,17 @@ cur_dir=$(pwd)
 
 if [ -f /etc/redhat-release ]; then
     release="centos"
-elif cat /etc/issue | grep -Eqi "debian"; then
+    elif cat /etc/issue | grep -Eqi "debian"; then
     release="debian"
-elif cat /etc/issue | grep -Eqi "ubuntu"; then
+    elif cat /etc/issue | grep -Eqi "ubuntu"; then
     release="ubuntu"
-elif cat /etc/issue | grep -Eqi "centos|red hat|redhat"; then
+    elif cat /etc/issue | grep -Eqi "centos|red hat|redhat"; then
     release="centos"
-elif cat /proc/version | grep -Eqi "debian"; then
+    elif cat /proc/version | grep -Eqi "debian"; then
     release="debian"
-elif cat /proc/version | grep -Eqi "ubuntu"; then
+    elif cat /proc/version | grep -Eqi "ubuntu"; then
     release="ubuntu"
-elif cat /proc/version | grep -Eqi "centos|red hat|redhat"; then
+    elif cat /proc/version | grep -Eqi "centos|red hat|redhat"; then
     release="centos"
 else
     release=""
@@ -59,94 +59,8 @@ get_hint(){
     eval echo "\$hint_${new_val}"
 }
 
-#Display Memu
-display_menu(){
-    local soft=${1}
-    local default=${2}
-    eval local arr=(\${${soft}_arr[@]})
-    local default_prompt
-    if [[ "$default" != "" ]]; then
-        if [[ "$default" == "last" ]]; then
-            default=${#arr[@]}
-        fi
-        default_prompt="(default ${arr[$default-1]})"
-    fi
-    local pick
-    local hint
-    local vname
-    local prompt="which ${soft} you'd select ${default_prompt}: "
-
-    while :
-    do
-        echo -e "\n------------ ${soft} setting ------------\n"
-        for ((i=1;i<=${#arr[@]};i++ )); do
-            vname="$(get_valid_valname ${arr[$i-1]})"
-            hint="$(get_hint $vname)"
-            [[ "$hint" == "" ]] && hint="${arr[$i-1]}"
-            echo -e "${green}${i}${plain}) $hint"
-        done
-        echo
-        read -p "${prompt}" pick
-        if [[ "$pick" == "" && "$default" != "" ]]; then
-            pick=${default}
-            break
-        fi
-
-        if ! is_digit "$pick"; then
-            prompt="Input error, please input a number"
-            continue
-        fi
-
-        if [[ "$pick" -lt 1 || "$pick" -gt ${#arr[@]} ]]; then
-            prompt="Input error, please input a number between 1 and ${#arr[@]}: "
-            continue
-        fi
-
-        break
-    done
-
-    eval ${soft}=${arr[$pick-1]}
-    vname="$(get_valid_valname ${arr[$pick-1]})"
-    hint="$(get_hint $vname)"
-    [[ "$hint" == "" ]] && hint="${arr[$pick-1]}"
-    echo -e "\nyour selection: $hint\n"
-}
-
 version_ge(){
     test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"
-}
-
-get_latest_version() {
-    latest_version=($(wget -qO- http://kernel.ubuntu.com/~kernel-ppa/mainline/ | awk -F'\"v' '/v[4-9]./{print $2}' | cut -d/ -f1 | grep -v - | sort -V))
-
-    [ ${#latest_version[@]} -eq 0 ] && echo -e "${red}Error:${plain} Get latest kernel version failed." && exit 1
-
-    kernel_arr=()
-    for i in ${latest_version[@]}; do
-        if version_ge $i 4.14; then
-            kernel_arr+=($i);
-        fi
-    done
-
-    display_menu kernel last
-
-    if [[ `getconf WORD_BIT` == "32" && `getconf LONG_BIT` == "64" ]]; then
-        deb_name=$(wget -qO- http://kernel.ubuntu.com/~kernel-ppa/mainline/v${kernel}/ | grep "linux-image" | grep "generic" | awk -F'\">' '/amd64.deb/{print $2}' | cut -d'<' -f1 | head -1)
-        deb_kernel_url="http://kernel.ubuntu.com/~kernel-ppa/mainline/v${kernel}/${deb_name}"
-        deb_kernel_name="linux-image-${kernel}-amd64.deb"
-        modules_deb_name=$(wget -qO- http://kernel.ubuntu.com/~kernel-ppa/mainline/v${kernel}/ | grep "linux-modules" | grep "generic" | awk -F'\">' '/amd64.deb/{print $2}' | cut -d'<' -f1 | head -1)
-        deb_kernel_modules_url="http://kernel.ubuntu.com/~kernel-ppa/mainline/v${kernel}/${modules_deb_name}"
-        deb_kernel_modules_name="linux-modules-${kernel}-amd64.deb"
-    else
-        deb_name=$(wget -qO- http://kernel.ubuntu.com/~kernel-ppa/mainline/v${kernel}/ | grep "linux-image" | grep "generic" | awk -F'\">' '/i386.deb/{print $2}' | cut -d'<' -f1 | head -1)
-        deb_kernel_url="http://kernel.ubuntu.com/~kernel-ppa/mainline/v${kernel}/${deb_name}"
-        deb_kernel_name="linux-image-${kernel}-i386.deb"
-        modules_deb_name=$(wget -qO- http://kernel.ubuntu.com/~kernel-ppa/mainline/v${kernel}/ | grep "linux-modules" | grep "generic" | awk -F'\">' '/i386.deb/{print $2}' | cut -d'<' -f1 | head -1)
-        deb_kernel_modules_url="http://kernel.ubuntu.com/~kernel-ppa/mainline/v${kernel}/${modules_deb_name}"
-        deb_kernel_modules_name="linux-modules-${kernel}-i386.deb"
-    fi
-
-    [ -z ${deb_name} ] && echo -e "${red}Error:${plain} Getting Linux kernel binary package name failed, maybe kernel build failed. Please choose other one and try again." && exit 1
 }
 
 get_opsy() {
@@ -170,7 +84,7 @@ get_char() {
     stty $SAVEDSTTY
 }
 
-getversion() {
+getDCentosVersion() {
     if [[ -s /etc/redhat-release ]]; then
         grep -oE  "[0-9.]+" /etc/redhat-release
     else
@@ -178,10 +92,31 @@ getversion() {
     fi
 }
 
-centosversion() {
+getUbuntuVersion(){
+    if [[ -s /etc/issue ]]; then
+       grep -oE  "[0-9.]+" /etc/issue 
+    fi
+}
+
+centosVersion() {
     if [ x"${release}" == x"centos" ]; then
         local code=$1
-        local version="$(getversion)"
+        local version="$(getCentosVersion)"
+        local main_ver=${version%%.*}
+        if [ "$main_ver" == "$code" ]; then
+            return 0
+        else
+            return 1
+        fi
+    else
+        return 1
+    fi
+}
+
+ubuntuVersion() {
+    if [ x"${release}" == x"ubuntu" ]; then
+        local code=$1
+        local version="$(getUbuntuVersion)"
         local main_ver=${version%%.*}
         if [ "$main_ver" == "$code" ]; then
             return 0
@@ -212,20 +147,20 @@ check_kernel_version() {
 }
 
 install_elrepo() {
-
-    if centosversion 5; then
+    
+    if centosVersion 5; then
         echo -e "${red}Error:${plain} not supported CentOS 5."
         exit 1
     fi
-
+    
     rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
-
-    if centosversion 6; then
+    
+    if centosVersion 6; then
         rpm -Uvh http://www.elrepo.org/elrepo-release-6-8.el6.elrepo.noarch.rpm
-    elif centosversion 7; then
+        elif centosVersion 7; then
         rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-3.el7.elrepo.noarch.rpm
     fi
-
+    
     if [ ! -f /etc/yum.repos.d/elrepo.repo ]; then
         echo -e "${red}Error:${plain} Install elrepo failed, please check it."
         exit 1
@@ -248,14 +183,14 @@ install_config() {
                 exit 1
             fi
             sed -i 's/^default=.*/default=0/g' /boot/grub/grub.conf
-        elif centosversion 7; then
+            elif centosversion 7; then
             if [ ! -f "/boot/grub2/grub.cfg" ]; then
                 echo -e "${red}Error:${plain} /boot/grub2/grub.cfg not found, please check it."
                 exit 1
             fi
             grub2-set-default 0
         fi
-    elif [[ x"${release}" == x"debian" || x"${release}" == x"ubuntu" ]]; then
+        elif [[ x"${release}" == x"debian" || x"${release}" == x"ubuntu" ]]; then
         /usr/sbin/update-grub
     fi
 }
@@ -270,6 +205,44 @@ reboot_os() {
         echo -e "${green}Info:${plain} Reboot has been canceled..."
         exit 0
     fi
+}
+#download ubuntu14.04 kernel
+dl_kernel(){
+    [[ ! -e "/usr/bin/wget" ]] && apt-get -y update && apt-get -y install wget
+    if [[ `getconf WORD_BIT` == "32" && `getconf LONG_BIT` == "64" ]]; then
+        mkdir x64_kernels && cd x64_kernels
+        wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.14.56/linux-headers-4.14.56-041456_4.14.56-041456.201807170758_all.deb
+        wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.14.56/linux-headers-4.14.56-041456-generic_4.14.56-041456.201807170758_amd64.deb
+        wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.14.56/linux-image-unsigned-4.14.56-041456-generic_4.14.56-041456.201807170758_amd64.deb
+        wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.14.56/linux-modules-4.14.56-041456-generic_4.14.56-041456.201807170758_amd64.deb
+    else
+        mkdir x32_kernels && cd x32_kernels
+        wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.14.56/linux-headers-4.14.56-041456_4.14.56-041456.201807170758_all.deb
+        wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.14.56/linux-headers-4.14.56-041456-generic_4.14.56-041456.201807170758_i386.deb
+        wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.14.56/linux-image-4.14.56-041456-generic_4.14.56-041456.201807170758_i386.deb
+        wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.14.56/linux-modules-4.14.56-041456-generic_4.14.56-041456.201n807170758_i386.deb
+    fi
+    cd ${cur_dir}
+}
+# prepair config kernel
+pre_config_kernels(){
+    [[ ! -e "/usr/bin/wget" ]] && apt-get -y update && apt-get -y install wget
+    mkdir pre_deb && cd pre_deb
+    wget http://security.ubuntu.com/ubuntu/pool/main/l/linux-base/linux-base_4.5ubuntu1~16.04.1_all.deb
+    if [[ `getconf WORD_BIT` == "32" && `getconf LONG_BIT` == "64" ]]; then
+        wget http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.0g-2ubuntu4_amd64.deb
+    else
+        wget http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.0g-2ubuntu4_i386.deb
+    fi
+    dpkg -i *.deb
+    
+    #cleanup
+    cd ${cur_dir} && rm -rf pre_deb
+}
+#unnstall kernel
+uninstall_keinel(){
+    apt-get install byobu bikeshed -y 
+    purge-old-kernels --keep 1 -q -y
 }
 
 install_bbr() {
@@ -287,7 +260,7 @@ install_bbr() {
         echo -e "${green}Info:${plain} Setting TCP BBR completed..."
         exit 0
     fi
-
+    
     if [[ x"${release}" == x"centos" ]]; then
         install_elrepo
         [ ! "$(command -v yum-config-manager)" ] && yum install -y yum-utils > /dev/null 2>&1
@@ -298,34 +271,46 @@ install_bbr() {
             exit 1
         fi
     elif [[ x"${release}" == x"debian" ]]; then
-        [[ ! -e "/usr/bin/wget" ]] && apt-get -y update && apt-get -y install wget
-        echo -e "${green}Info:${plain} Getting Latest kernel Version..."
-        get_latest_version
-        if [ -n ${modules_deb_name} ]; then
-            wget -c -t3 -T60 -O ${deb_kernel_modules_name} ${deb_kernel_modules_url}
-            if [ $? -ne 0 ]; then
-                echo -e "${red}Error:${plain} Download ${deb_kernel_modules_name} failed, please check it."
-                exit 1
-            fi
+        if [[ `getconf WORD_BIT` == "32" && `getconf LONG_BIT` == "64" ]]; then
+            echo -e "\ndeb http://ftp.debian.org/debian jessie-backports main" >> /etc/apt/sources.list
+            apt-get update -y
+            apt -t jessie-backports install linux-image-amd64
+        else
+            echo -e "\ndeb http://ftp.debian.org/debian jessie-backports main" >> /etc/apt/sources.list
+            apt-get update -y
+            apt -t jessie-backports install linux-image-686 -y
         fi
-        wget -c -t3 -T60 -O ${deb_kernel_name} ${deb_kernel_url}
-        if [ $? -ne 0 ]; then
-            echo -e "${red}Error:${plain} Download ${deb_kernel_name} failed, please check it."
-            exit 1
-        fi
-        [ -f ${deb_kernel_modules_name} ] && dpkg -i ${deb_kernel_modules_name}
-        dpkg -i ${deb_kernel_name}
-        rm -f ${deb_kernel_name} ${deb_kernel_modules_name}
-
-    # Add support for ubuntu os in aliyun machine
     elif [[ x"${release}" == x"ubuntu" ]]; then
-        apt-get install linux-generic-hwe-16.04 -y
+        if ubuntuVersion 12 ; then
+            echo -e "${red}Error:${plain} not supported Ubuntu 12."
+            exit 1
+        elif ubuntuVersion 14 ; then
+            dl_kernel
+            pre_config_kernels
+            if [[ `getconf WORD_BIT` == "32" && `getconf LONG_BIT` == "64" ]]; then
+                cd x64_kernels
+                dpkg -i *.deb
 
+                #cleanup
+                cd ${cur_dir} && rm -rf x64_kernels
+            else
+                cd x32_kernels
+                dpkg -i *.deb
+                
+                #cleanup
+                cd ${cur_dir} && rm -rf x32_kernels
+            fi
+            #uninstall old kernel
+            uninstall_keinel
+
+        elif ubuntuVersion 16 ; then
+            apt-get install linux-generic-hwe-16.04 -y
+        fi
     else
         echo -e "${red}Error:${plain} OS is not be supported, please change to CentOS/Debian/Ubuntu and try again."
         exit 1
     fi
-
+    
     install_config
     sysctl_config
     reboot_os
@@ -340,11 +325,10 @@ echo " Kernel  : $kern"
 echo "----------------------------------------"
 echo " Auto install latest kernel for TCP BBR"
 echo
-echo " URL: https://teddysun.com/489.html"
+echo " Thanks: Teddysun"
 echo "----------------------------------------"
 echo
 echo "Press any key to start...or Press Ctrl+C to cancel"
 char=`get_char`
 
 install_bbr 2>&1 | tee ${cur_dir}/install_bbr.log
-
