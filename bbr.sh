@@ -235,15 +235,15 @@ pre_config_kernels(){
         wget http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.0g-2ubuntu4_i386.deb
     fi
     dpkg -i *.deb
-    
+
     #cleanup
     cd ${cur_dir} && rm -rf pre_deb
 }
-#unnstall kernel
-uninstall_keinel(){
-    apt-get install byobu bikeshed -y 
-    purge-old-kernels --keep 1 -q -y
-}
+# #unnstall kernel
+# uninstall_keinel(){
+#     apt-get install byobu bikeshed -y 
+#     purge-old-kernels --keep 1 -q -y
+# }
 
 install_bbr() {
     check_bbr_status
@@ -301,7 +301,7 @@ install_bbr() {
                 cd ${cur_dir} && rm -rf x32_kernels
             fi
             #uninstall old kernel
-            uninstall_keinel
+            # uninstall_keinel
 
         elif ubuntuVersion 16 ; then
             apt-get install linux-generic-hwe-16.04 -y
