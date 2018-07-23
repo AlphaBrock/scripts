@@ -16,7 +16,7 @@ cur_dir=`pwd`
 red='\033[0;31m'
 green='\033[0;32m'
 yellow='\033[0;33m'
-plain='\033[0m'
+plain='${plain}'
 
 shadowsockprotocol="auth_aes128_md5"
 shadowsockscipher="aes-128-ctr"
@@ -279,12 +279,12 @@ install_ssr(){
         clear
         echo
         echo -e "Congratulations, ShadowsocksR server install completed!"
-        echo -e "Your Server IP        : \033[41;37m $(get_ip) \033[0m"
-        echo -e "Your Server Port      : \033[41;37m ${shadowsocksport} \033[0m"
-        echo -e "Your Password         : \033[41;37m ${shadowsockspwd} \033[0m"
-        echo -e "Your Protocol         : \033[41;37m ${shadowsockprotocol} \033[0m"
-        echo -e "Your obfs             : \033[41;37m ${shadowsockobfs} \033[0m"
-        echo -e "Your Encryption Method: \033[41;37m ${shadowsockscipher} \033[0m"
+        echo -e "Your Server IP        : ${green} $(get_ip) ${plain}"
+        echo -e "Your Server Port      : ${green} ${shadowsocksport} ${plain}"
+        echo -e "Your Password         : ${green} ${shadowsockspwd} ${plain}"
+        echo -e "Your Protocol         : ${green} ${shadowsockprotocol} ${plain}"
+        echo -e "Your obfs             : ${green} ${shadowsockobfs} ${plain}"
+        echo -e "Your Encryption Method: ${green} ${shadowsockscipher} ${plain}"
         echo
         echo "Enjoy it!"
         echo
@@ -346,11 +346,11 @@ install_shadowsocksr(){
 bbr_installation_status(){
     cd ${cur_dir}
     if [[ ! -e ${bbr_file} ]]; then
-        echo -e "${red} 没有发现 BBR脚本，开始下载...${plain}"
-        if ! wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh; then
-            echo -e "${red} BBR 脚本下载失败 !${plain}" && exit 1
+        echo -e "${red} Not Found bbr script，starting download...${plain}"
+        if ! wget --no-check-certificate https://raw.githubusercontent.com/AlphaBrock/scripts/master/bbr.sh?token=AMez1NE-0bBwreJ9LDZP41oToru2_ac3ks5bXxFlwA%3D%3D; then
+            echo -e "${red} Download Failed !${plain}" && exit 1
         else
-            echo -e "${green} BBR 脚本下载完成 !${plain}"
+            echo -e "${green} Download Finshed !${plain}"
             chmod +x bbr.sh
         fi
     fi
@@ -407,9 +407,11 @@ com_softether(){
     tar xzf softether-vpnserver-v4.27-9667-beta-2018.05.26-linux-x64-64bit.tar.gz
     rm -rf softether-vpnserver-v4.27-9667-beta-2018.05.26-linux-x64-64bit.tar.gz
     cd vpnserver
+
+    clear
     # send info
     echo "------------------------ Information ------------------------"
-    echo -e "${green}In this moment,please input the number"1" three time${plain}"
+    echo -e "${green}In this moment,please input the number 1 three time${plain}"
     echo
     echo "Press any key to start...or Press Ctrl+C to cancel"
     echo "-------------------------------------------------------------"
@@ -429,13 +431,14 @@ install_softether(){
     
     com_softether
     
+    clear
     #start vpn server
     ./vpnserver start
     echo -e "${green}SoftEther VPN Server has been start${plain}"
     
     # set password
     echo "------------------------ Information ------------------------"
-    echo -e "${green}In this moment,please input the number"1" three time${plain}"
+    echo -e "${green}In this moment,please input onece number 1 and double enter ${plain}"
     echo -e "Then input command ${green}"ServerPasswordSet"${plain} to set password"
     echo "Press any key to start...or Press Ctrl+C to cancel"
     echo "-------------------------------------------------------------"

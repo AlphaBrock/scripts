@@ -85,7 +85,7 @@ get_char() {
     stty $SAVEDSTTY
 }
 
-getDCentosVersion() {
+getCentosVersion() {
     if [[ -s /etc/redhat-release ]]; then
         grep -oE  "[0-9.]+" /etc/redhat-release
     else
@@ -178,13 +178,13 @@ sysctl_config() {
 
 install_config() {
     if [[ x"${release}" == x"centos" ]]; then
-        if centosversion 6; then
+        if centosVersion 6; then
             if [ ! -f "/boot/grub/grub.conf" ]; then
                 echo -e "${red}Error:${plain} /boot/grub/grub.conf not found, please check it."
                 exit 1
             fi
             sed -i 's/^default=.*/default=0/g' /boot/grub/grub.conf
-            elif centosversion 7; then
+            elif centosVersion 7; then
             if [ ! -f "/boot/grub2/grub.cfg" ]; then
                 echo -e "${red}Error:${plain} /boot/grub2/grub.cfg not found, please check it."
                 exit 1
