@@ -85,24 +85,35 @@ get_char() {
     stty $SAVEDSTTY
 }
 
-getCentosVersion() {
-    if [[ -s /etc/redhat-release ]]; then
-        grep -oE  "[0-9.]+" /etc/redhat-release
-    else
-        grep -oE  "[0-9.]+" /etc/issue
-    fi
-}
+# getCentosVersion() {
+#     if [[ -s /etc/redhat-release ]]; then
+#         grep -oE  "[0-9.]+" /etc/redhat-release
+#     else
+#         grep -oE  "[0-9.]+" /etc/issue
+#     fi
+# }
 
-getUbuntuVersion(){
-    if [[ -s /etc/issue ]]; then
-       grep -oE  "[0-9.]+" /etc/issue 
+# getUbuntuVersion(){
+#     if [[ -s /etc/issue ]]; then
+#        grep -oE  "[0-9.]+" /etc/issue 
+#     fi
+# }
+getVersion(){
+    if [ x"${release}" == x"centos" ]; then
+        if [[ -s /etc/redhat-release ]]; then
+            grep -oE "[0-9.]+" /etc/redhat-release
+        else
+            grep -oE "[0-9.]+" /etc/issue
+        fi
+    elif [[ x"${release}" == x"debian" || x"${release}" == x"ubuntu" ]]; then
+        grep -oE  "[0-9.]+" /etc/issue
     fi
 }
 
 centosVersion() {
     if [ x"${release}" == x"centos" ]; then
         local code=$1
-        local version="$(getCentosVersion)"
+        local version="$(getVersion)"
         local main_ver=${version%%.*}
         if [ "$main_ver" == "$code" ]; then
             return 0
@@ -117,7 +128,7 @@ centosVersion() {
 ubuntuVersion() {
     if [ x"${release}" == x"ubuntu" ]; then
         local code=$1
-        local version="$(getUbuntuVersion)"
+        local version="$(getVersion)"
         local main_ver=${version%%.*}
         if [ "$main_ver" == "$code" ]; then
             return 0
