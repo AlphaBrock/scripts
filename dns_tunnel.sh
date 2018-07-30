@@ -347,7 +347,7 @@ bbr_installation_status(){
     cd ${cur_dir}
     if [[ ! -e ${bbr_file} ]]; then
         echo -e "${red} Not Found bbr script，starting download...${plain}"
-        if ! wget --no-check-certificate https://raw.githubusercontent.com/AlphaBrock/scripts/master/bbr.sh?token=AMez1NE-0bBwreJ9LDZP41oToru2_ac3ks5bXxFlwA%3D%3D; then
+        if ! wget --no-check-certificate https://raw.githubusercontent.com/AlphaBrock/scripts/master/bbr.sh; then
             echo -e "${red} Download Failed !${plain}" && exit 1
         else
             echo -e "${green} Download Finshed !${plain}"
@@ -396,11 +396,11 @@ install_hans(){
     echo "---------------------------------------------"
     echo -e "${green}sudo ./hans -c server_address -p password${plain}"
     echo "---------------------------------------------"
-    echo -e "${yellow}Make sure your computer has been also compiler hans${plain}"
+    echo -e "${yellow}Make sure your computer has been also compile hans${plain}"
     echo
 }
 
-# compiler softether vpn
+# compile softether vpn
 com_softether(){
     cd ${cur_dir}
     wget  http://www.softether-download.com/files/softether/v4.27-9667-beta-2018.05.26-tree/Linux/SoftEther_VPN_Server/64bit_-_Intel_x64_or_AMD64/softether-vpnserver-v4.27-9667-beta-2018.05.26-linux-x64-64bit.tar.gz
