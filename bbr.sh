@@ -297,6 +297,7 @@ install_bbr() {
             echo -e "${red}Error:${plain} not supported Ubuntu 12"
             exit 1
         elif ubuntuVersion 14 ; then
+            apt-get update -y
             dl_kernel
             pre_config_kernels
             if [[ `getconf WORD_BIT` == "32" && `getconf LONG_BIT` == "64" ]]; then
@@ -316,6 +317,7 @@ install_bbr() {
             # uninstall_keinel
 
         elif ubuntuVersion 16 ; then
+            apt-get update -y
             apt-get install linux-generic-hwe-16.04 -y
         fi
     else
