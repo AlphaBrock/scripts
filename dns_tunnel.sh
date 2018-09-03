@@ -127,6 +127,14 @@ get_char(){
     stty $SAVEDSTTY
 }
 
+#get server ip
+get_ip(){
+    local IP=$( ip addr | egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | egrep -v "^192\.168|^172\.1[6-9]\.|^172\.2[0-9]\.|^172\.3[0-2]\.|^10\.|^127\.|^255\.|^0\." | head -n 1 )
+    [ -z ${IP} ] && IP=$( wget -qO- -t1 -T2 ipv4.icanhazip.com )
+    [ -z ${IP} ] && IP=$( wget -qO- -t1 -T2 ipinfo.io/ip )
+    echo ${IP}
+}
+
 # Pre-installation settings
 pre_install(){
     if check_sys packageManager yum || check_sys packageManager apt; then
@@ -361,6 +369,10 @@ install_bbr() {
     bash ${bbr_file}
 }
 
+install_wordpress(){
+    
+}
+
 # compiler hans
 com_hans(){
     cd ${cur_dir}
@@ -394,7 +406,7 @@ install_hans(){
     echo "  hans has been started "
     echo "  run this command in your shell terminal"
     echo "---------------------------------------------"
-    echo -e "${green}sudo ./hans -c server_address -p password${plain}"
+    echo -e "${green}sudo ./hans -c ${get_ip} -p ${passwd}${plain}"
     echo "---------------------------------------------"
     echo -e "${yellow}Make sure your computer has been also compile hans${plain}"
     echo
