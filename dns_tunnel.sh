@@ -369,10 +369,6 @@ install_bbr() {
     bash ${bbr_file}
 }
 
-install_wordpress(){
-    
-}
-
 # compiler hans
 com_hans(){
     cd ${cur_dir}
