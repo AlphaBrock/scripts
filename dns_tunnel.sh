@@ -114,7 +114,7 @@ centosversion(){
 }
 
 # Debian version
-deabianversion()[
+deabianversion(){
     if [ x"${release}" == x"debian" ]; then
         local code=$1
         local version="$(getversion)"
@@ -127,7 +127,7 @@ deabianversion()[
     else
         return 1
     fi
-]
+}
 # Get public IP address
 get_ip(){
     local IP=$( ip addr | egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | egrep -v "^192\.168|^172\.1[6-9]\.|^172\.2[0-9]\.|^172\.3[0-2]\.|^10\.|^127\.|^255\.|^0\." | head -n 1 )
