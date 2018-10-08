@@ -86,9 +86,13 @@ check_sys(){
 
 # Get version
 getversion(){
-    if [[ -s /etc/redhat-release ]]; then
-        grep -oE  "[0-9.]+" /etc/redhat-release
-    else
+    if [ x"${release}" == x"centos" ]; then
+        if [[ -s /etc/redhat-release ]]; then
+            grep -oE  "[0-9.]+" /etc/redhat-release
+        else
+            grep -oE  "[0-9.]+" /etc/issue
+        fi
+    elif [[ x"${release}" == x"debian" ]]; then
         grep -oE  "[0-9.]+" /etc/issue
     fi
 }
@@ -109,6 +113,21 @@ centosversion(){
     fi
 }
 
+# Debian version
+deabianversion()[
+    if [ x"${release}" == x"debian" ]; then
+        local code=$1
+        local version="$(getversion)"
+        local main_ver=${version%%.*}
+        if [ "$main_ver" == "$code" ]; then
+            return 0
+        else
+            return 1
+        fi
+    else
+        return 1
+    fi
+]
 # Get public IP address
 get_ip(){
     local IP=$( ip addr | egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | egrep -v "^192\.168|^172\.1[6-9]\.|^172\.2[0-9]\.|^172\.3[0-2]\.|^10\.|^127\.|^255\.|^0\." | head -n 1 )
@@ -385,7 +404,7 @@ install_hans(){
     com_hans
     #start hans
     clear
-    read -p "Please input your password and Press enter to continue:" passwd
+    read -e -p "Please input your password and Press enter to continue:" passwd
     echo -e "${green}your password is${plain}: ${passwd}"
     ./hans -s 10.1.2.0 -p ${passwd}
     
@@ -419,6 +438,43 @@ com_softether(){
     make
 }
 
+config_system_start(){
+    mv /etc/rc.local /etc/rc.local.bk 
+    cat > /etc/rc.local<<-EOF
+    #!/bin/sh -e
+    #
+    # rc.local
+    #
+    # This script is executed at the end of each multiuser runlevel.
+    # Make sure that the script will "exit 0" on success or any other
+    # value on error.
+    #
+    # In order to enable or disable this script just change the execution
+    # bits.
+    #
+    # By default this script does nothing.
+    /root/vpnserver/vpnserver start
+    exit 0
+EOF
+
+    chmod +x /etc/rc.local
+}
+
+#add system start
+sys_start(){
+    if [[ x"${release}" == x"ubuntu" ]]; then
+        config_system_start
+    elif [[ x"${release}" == x"debian" ]]; then
+        if deabianversion 8; then
+            config_system_start
+        fi
+        elif deabianversion 9; then
+            config_system_start
+            systemctl start rc-local
+        fi
+    fi
+}
+
 #Install Softether VPN
 install_softether(){
     # Install necessary dependencies
@@ -436,6 +492,8 @@ install_softether(){
     ./vpnserver start
     echo -e "${green}SoftEther VPN Server has been start${plain}"
     
+    sys_start
+
     # set password
     echo "------------------------ Information ------------------------"
     echo -e "${green}In this moment,please input onece number 1 and double enter ${plain}"
@@ -456,7 +514,7 @@ echo -e "  黑科技一键管理脚本
   ${green}4.${plain} 安装 IP Over ICMP
   ${green}5.${plain} 安装 SoftEther VPN
 "
-echo && read -p "please input number [1-5]" num
+echo && read -e -p "please input number [1-5]" num
 case "$num" in
     1)
         install_shadowsocksr
