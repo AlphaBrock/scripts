@@ -467,13 +467,14 @@ sys_start(){
     elif [[ x"${release}" == x"debian" ]]; then
         if deabianversion 8; then
             config_system_start
-        fi
         elif deabianversion 9; then
             config_system_start
             systemctl start rc-local
         fi
     fi
+
 }
+
 
 #Install Softether VPN
 install_softether(){
