@@ -487,6 +487,7 @@ install_softether(){
     fi
     
     com_softether
+    sys_start
     
     clear
     #start vpn server
@@ -503,7 +504,6 @@ install_softether(){
     echo "-------------------------------------------------------------"
     char=`get_char`
     ./vpncmd
-    sys_start
 }
 
 echo -e "  黑科技一键管理脚本
