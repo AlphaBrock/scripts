@@ -422,9 +422,9 @@ install_hans(){
 # compile softether vpn
 com_softether(){
     cd ${cur_dir}
-    wget  http://www.softether-download.com/files/softether/v4.27-9667-beta-2018.05.26-tree/Linux/SoftEther_VPN_Server/64bit_-_Intel_x64_or_AMD64/softether-vpnserver-v4.27-9667-beta-2018.05.26-linux-x64-64bit.tar.gz
-    tar xzf softether-vpnserver-v4.27-9667-beta-2018.05.26-linux-x64-64bit.tar.gz
-    rm -rf softether-vpnserver-v4.27-9667-beta-2018.05.26-linux-x64-64bit.tar.gz
+    wget https://github.com/SoftEtherVPN/SoftEtherVPN_Stable/releases/download/v4.28-9669-beta/softether-vpnserver-v4.28-9669-beta-2018.09.11-linux-x64-64bit.tar.gz
+    tar xzf softether-vpnserver-v4.28-9669-beta-2018.09.11-linux-x64-64bit.tar.gz
+    rm -rf softether-vpnserver-v4.28-9669-beta-2018.09.11-linux-x64-64bit.tar.gz
     cd vpnserver
 
     clear
@@ -503,6 +503,7 @@ install_softether(){
     echo "-------------------------------------------------------------"
     char=`get_char`
     ./vpncmd
+    sys_start
 }
 
 echo -e "  黑科技一键管理脚本
