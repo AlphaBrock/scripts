@@ -130,7 +130,9 @@ setting_efb(){
 
 config_efb(){
 
-  setting_efb
+  pip3 install ehforwarderbot 
+  pip3 install efb-telegram-master
+  pip3 install efb-wechat-slave
 
   mkdir -p ~/.ehforwarderbot/profiles/default
   mkdir -p ~/.ehforwarderbot/profiles/default/blueset.telegram
