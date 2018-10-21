@@ -413,7 +413,7 @@ install_hans(){
     echo "  hans has been started "
     echo "  run this command in your shell terminal"
     echo "---------------------------------------------"
-    echo -e "${green}sudo ./hans -c $(get_ip) -p $(passwd) ${plain}"
+    echo -e "${green}sudo ./hans -c ${get_ip} -p $(passwd) ${plain}"
     echo "---------------------------------------------"
     echo -e "${yellow}Make sure your computer has been also compile hans${plain}"
     echo
@@ -481,7 +481,7 @@ install_softether(){
     # Install necessary dependencies
     if check_sys packageManager yum; then
         yum install -y gcc gcc-c++ automake autoconf git wget
-        elif check_sys packageManager apt; then
+    elif check_sys packageManager apt; then
         apt-get -y update
         apt-get -y install build-essential git wget
     fi
@@ -493,8 +493,6 @@ install_softether(){
     #start vpn server
     ./vpnserver start
     echo -e "${green}SoftEther VPN Server has been start${plain}"
-    
-    sys_start
 
     # set password
     echo "------------------------ Information ------------------------"

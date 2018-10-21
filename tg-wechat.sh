@@ -193,20 +193,9 @@ start_efb(){
 startup_efb(){
     mv /etc/rc.local /etc/rc.local.bk 
     cat > /etc/rc.local<<-EOF
-    #!/bin/sh -e
-    #
-    # rc.local
-    #
-    # This script is executed at the end of each multiuser runlevel.
-    # Make sure that the script will "exit 0" on success or any other
-    # value on error.
-    #
-    # In order to enable or disable this script just change the execution
-    # bits.
-    #
-    # By default this script does nothing.
-    python3 -m ehforwarderbot
-    exit 0
+#!/bin/sh -e
+python3 -m ehforwarderbot
+exit 0
 EOF
     chmod +x /etc/rc.local
 }
@@ -216,7 +205,7 @@ echo -e "  EFB一键管理脚本
 
   ${green}1.${plain} 安装 EFB
   ${green}2.${plain} 更新 EFB
-————————————
+————————————————————————————————————
   ${green}3.${plain} 启动 EFB
   ${green}4.${plain} 开机启动 EFB
 "
