@@ -209,7 +209,7 @@ update_efb(){
 }
 start_efb(){
 #   source ~/.bashrc
-  python -m ehforwarderbot 
+  ehforwarderbot
 }
 # startup_efb(){
 #     mv /etc/rc.local /etc/rc.local.bk 
