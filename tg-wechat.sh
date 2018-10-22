@@ -113,7 +113,7 @@ install_py3(){
         sudo apt-get install build-essential libncursesw5-dev libgdbm-dev libc6-dev -y
         sudo apt-get install zlib1g-dev libsqlite3-dev tk-dev -y
         sudo apt-get install libssl-dev openssl -y
-        sudo apt-get install libffi-dev unzip -y
+        sudo apt-get install libffi-dev -y
 
         #install pyenv
         git clone git://github.com/yyuu/pyenv.git ~/.pyenv
@@ -122,8 +122,8 @@ install_py3(){
         echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
         echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
         echo 'eval "$(pyenv init -)"' >> ~/.bashrc
-        exec $SHELL -l
-        # source ~/.bashrc
+        # exec $SHELL -l
+        source ~/.bashrc
         #install python3.6.5
         pyenv install 3.6.5 -v
         pyenv rehash
