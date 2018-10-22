@@ -123,7 +123,6 @@ install_py3(){
         echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
         echo 'eval "$(pyenv init -)"' >> ~/.bashrc
         # exec $SHELL -l
-        source ~/.bashrc
         #install python3.6.5
         pyenv install 3.6.5 -v
         pyenv rehash
@@ -189,13 +188,17 @@ EOF
     chmod +x ~/.ehforwarderbot/profiles/default/config.yaml
     chmod +x ~/.ehforwarderbot/profiles/default/blueset.telegram/config.yaml
     echo -e "${green}[Info]:${plain}finished write"
+
+    echo
+    echo
+    echo -e "${green}[Info]:${plain}Please run this command after installed EFB:${green}source ~/.bashrc${plain},then run again:${green}./tg-wechat.sh${plain} to start EFB!"
 }
 
 install_efb(){
   install_py3
   setting_efb
   config_efb
-  start_efb
+#   start_efb
 }
 
 update_efb(){
@@ -204,6 +207,7 @@ update_efb(){
   pip3 install -U efb-wechat-slave
 }
 start_efb(){
+#   source ~/.bashrc
   python3 -m ehforwarderbot 
 }
 # startup_efb(){
