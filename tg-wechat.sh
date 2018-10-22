@@ -117,19 +117,21 @@ install_py3(){
         # # update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.5 1 
         # # update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 2 
         # # update-alternatives --config python3
+        sudo apt-get update -y
         sudo apt-get install build-essential python-dev python-setuptools python-pip python-smbus -y
         sudo apt-get install build-essential libncursesw5-dev libgdbm-dev libc6-dev -y
         sudo apt-get install zlib1g-dev libsqlite3-dev tk-dev -y
         sudo apt-get install libssl-dev openssl -y
-        sudo apt-get install libffi-dev -y
+        sudo apt-get install libffi-dev unzip -y
 
         #install pyenv
-        # git clone git://github.com/yyuu/pyenv.git ~/.pyenv
-        # echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
-        # echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
-        # echo 'eval "$(pyenv init -)"' >> ~/.bashrc
-        # exec $SHELL -l
-        curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+        # git clone git://github.com/yyuu/pyenv.git 
+        wget https://github.com/pyenv/pyenv/archive/master.zip -O pyenv.zip
+        unzip pyenv.zip && mv pyenv-master ~/.pyenv
+        echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
+        echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
+        echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+        exec $SHELL -l
         #install python3.6.5
         pyenv install 3.6.5 -v
         pyenv rehash
