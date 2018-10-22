@@ -190,9 +190,9 @@ EOF
     chmod +x ~/.ehforwarderbot/profiles/default/blueset.telegram/config.yaml
     echo -e "${green}[Info]:${plain}finished write"
 
-    echo
-    echo
-    echo -e "${green}[Info]:${plain}Please run this command after installed EFB:${green}source ~/.bashrc${plain},then run again:${green}./tg-wechat.sh${plain} to start EFB!"
+#     echo
+#     echo
+#     echo -e "${green}[Info]:${plain}Please run this command after installed EFB:${green}source ~/.bashrc${plain},then run again:${green}./tg-wechat.sh${plain} to start EFB!"
 }
 
 install_efb(){
