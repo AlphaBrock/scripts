@@ -123,6 +123,7 @@ install_py3(){
         echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
         echo 'eval "$(pyenv init -)"' >> ~/.bashrc
         # exec $SHELL -l
+        source ~/.bashrc
         #install python3.6.5
         pyenv install 3.6.5 -v
         pyenv rehash
