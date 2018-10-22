@@ -124,16 +124,15 @@ install_py3(){
         sudo apt-get install libffi-dev -y
 
         #install pyenv
-        git clone git://github.com/yyuu/pyenv.git ~/.pyenv
-        echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
-        echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
-        echo 'eval "$(pyenv init -)"' >> ~/.bashrc
-        exec $SHELL -l
-
+        # git clone git://github.com/yyuu/pyenv.git ~/.pyenv
+        # echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
+        # echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
+        # echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+        # exec $SHELL -l
+        curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+        #install python3.6.5
         pyenv install 3.6.5 -v
-
         pyenv rehash
-
         pyenv global 3.6.5
     else
         echo -e "${red}Error:${plain} Not supported Ubuntu14/18, please change to Ubuntu 16 and try again."
@@ -144,7 +143,7 @@ install_py3(){
 
 setting_efb(){
   sudo apt update -y
-  sudo apt-get install -y python3.6-gdbm python3-pip python-setuptools ffmpeg screen
+  sudo apt-get install -y python3-gdbm python3-pip python-setuptools ffmpeg screen
   sudo apt-get install -y libtiff5-dev libjpeg8-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev libmagic-dev libtool
   pip3 install pillow
 }
