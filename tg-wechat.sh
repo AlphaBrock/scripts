@@ -199,7 +199,7 @@ install_efb(){
   install_py3
   setting_efb
   config_efb
-#   start_efb
+  start_efb
 }
 
 update_efb(){
@@ -208,7 +208,7 @@ update_efb(){
   pip3 install -U efb-wechat-slave
 }
 start_efb(){
-#   source ~/.bashrc
+  source ~/.bashrc
   ehforwarderbot
 }
 # startup_efb(){
