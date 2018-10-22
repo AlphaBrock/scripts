@@ -108,12 +108,33 @@ install_py3(){
     exit 1   
   elif check_sys sysRelease ubuntu;then
     if ubuntuversion 16;then
-        sudo add-apt-repository ppa:jonathonf/python-3.6
-        sudo apt-get update -y
-        sudo apt-get install python3.6 -y
+        # sudo add-apt-repository ppa:jonathonf/python-3.6
+        # sudo apt-get update -y
+        # sudo apt-get install python3.6 -y
 
-        mv /usr/bin/python /usr/bin/python.bk
-        ln -s /usr/bin/python3.6m /usr/bin/python
+        # mv /usr/bin/python /usr/bin/python.bk
+        # ln -s /usr/bin/python3.6m /usr/bin/python
+        # # update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.5 1 
+        # # update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 2 
+        # # update-alternatives --config python3
+        sudo apt-get install build-essential python-dev python-setuptools python-pip python-smbus -y
+        sudo apt-get install build-essential libncursesw5-dev libgdbm-dev libc6-dev -y
+        sudo apt-get install zlib1g-dev libsqlite3-dev tk-dev -y
+        sudo apt-get install libssl-dev openssl -y
+        sudo apt-get install libffi-dev -y
+
+        #install pyenv
+        git clone git://github.com/yyuu/pyenv.git ~/.pyenv
+        echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
+        echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
+        echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+        exec $SHELL -l
+
+        pyenv install 3.6.5 -v
+
+        pyenv rehash
+
+        pyenv global 3.6.5
     else
         echo -e "${red}Error:${plain} Not supported Ubuntu14/18, please change to Ubuntu 16 and try again."
         exit 1
@@ -123,8 +144,8 @@ install_py3(){
 
 setting_efb(){
   sudo apt update -y
-  sudo apt-get install -y python3.6-gdbm python3-pip python-setuptools build-essential ffmpeg libssl-dev screen
-  sudo apt-get install -y libtiff5-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev libmagic-dev libtool
+  sudo apt-get install -y python3.6-gdbm python3-pip python-setuptools ffmpeg screen
+  sudo apt-get install -y libtiff5-dev libjpeg8-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev libmagic-dev libtool
   pip3 install pillow
 }
 
@@ -181,7 +202,7 @@ install_efb(){
   install_py3
   setting_efb
   config_efb
-  start_efb
+  # start_efb
 }
 
 update_efb(){
@@ -190,7 +211,7 @@ update_efb(){
   pip3 install -U efb-wechat-slave
 }
 start_efb(){
-  nohup python3 -m ehforwarderbot 2>&1 &
+  screen -S wechat && python3 -m ehforwarderbot 
 }
 startup_efb(){
     mv /etc/rc.local /etc/rc.local.bk 
