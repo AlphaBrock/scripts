@@ -2,7 +2,7 @@
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 #=================================================================#
-#   System Required:  CentOS 6,7, Debian, Ubuntu                  #
+#   System Required:  Ubuntu16.04                                 #
 #   Description: One click To Install EFB                         #
 #   Author: AlphaBrock <jcciam@outlook.com>                       #
 #=================================================================#
@@ -108,15 +108,6 @@ install_py3(){
     exit 1   
   elif check_sys sysRelease ubuntu;then
     if ubuntuversion 16;then
-        # sudo add-apt-repository ppa:jonathonf/python-3.6
-        # sudo apt-get update -y
-        # sudo apt-get install python3.6 -y
-
-        # mv /usr/bin/python /usr/bin/python.bk
-        # ln -s /usr/bin/python3.6m /usr/bin/python
-        # # update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.5 1 
-        # # update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 2 
-        # # update-alternatives --config python3
         sudo apt-get update -y
         sudo apt-get install build-essential python-dev python-setuptools python-pip python-smbus -y
         sudo apt-get install build-essential libncursesw5-dev libgdbm-dev libc6-dev -y
@@ -125,13 +116,14 @@ install_py3(){
         sudo apt-get install libffi-dev unzip -y
 
         #install pyenv
-        # git clone git://github.com/yyuu/pyenv.git 
-        wget https://github.com/pyenv/pyenv/archive/master.zip -O pyenv.zip
-        unzip pyenv.zip && mv pyenv-master ~/.pyenv
+        git clone git://github.com/yyuu/pyenv.git ~/.pyenv
+        # wget https://github.com/pyenv/pyenv/archive/master.zip -O pyenv.zip
+        # unzip pyenv.zip && mv pyenv-master ~/.pyenv
         echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
         echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
         echo 'eval "$(pyenv init -)"' >> ~/.bashrc
         exec $SHELL -l
+        # source ~/.bashrc
         #install python3.6.5
         pyenv install 3.6.5 -v
         pyenv rehash
@@ -203,7 +195,7 @@ install_efb(){
   install_py3
   setting_efb
   config_efb
-  # start_efb
+  start_efb
 }
 
 update_efb(){
@@ -212,17 +204,17 @@ update_efb(){
   pip3 install -U efb-wechat-slave
 }
 start_efb(){
-  screen -S wechat && python3 -m ehforwarderbot 
+  python3 -m ehforwarderbot 
 }
-startup_efb(){
-    mv /etc/rc.local /etc/rc.local.bk 
-    cat > /etc/rc.local<<-EOF
-#!/bin/sh -e
-python3 -m ehforwarderbot
-exit 0
-EOF
-    chmod +x /etc/rc.local
-}
+# startup_efb(){
+#     mv /etc/rc.local /etc/rc.local.bk 
+#     cat > /etc/rc.local<<-EOF
+# #!/bin/sh -e
+# python3 -m ehforwarderbot
+# exit 0
+# EOF
+#     chmod +x /etc/rc.local
+# }
 
 echo -e "  EFB一键管理脚本
   ---- AlphaBrock | jcciam@outlook.com ----
@@ -231,9 +223,8 @@ echo -e "  EFB一键管理脚本
   ${green}2.${plain} 更新 EFB
 ————————————————————————————————————
   ${green}3.${plain} 启动 EFB
-  ${green}4.${plain} 开机启动 EFB
 "
-echo && read -e -p "please input number [1-4]" num
+echo && read -e -p "please input number [1-3]" num
 case "$num" in
     1)
         install_efb
@@ -244,10 +235,7 @@ case "$num" in
     3)
         start_efb
     ;;
-    4)
-        startup_efb
-    ;;
     *)
-        echo -e "${red} please input correct number [1-4]${plain}"
+        echo -e "${red} please input correct number [1-3]${plain}"
     ;;
 esac
