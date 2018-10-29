@@ -487,6 +487,7 @@ install_softether(){
     fi
     
     com_softether
+    config_system_start
     sys_start
     
     clear
