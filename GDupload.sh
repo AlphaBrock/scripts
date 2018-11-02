@@ -13,13 +13,11 @@ while true; do  #提取下载文件根路径，如把/data/a/b/c/d.jpg变成/dat
     path=$(path%/*); 
     if [ "$path" = "$downloadpath" ] && [ $2 -eq 1 ]
         then
-        rclone=$(filepath/#$downloadpath/$rclone) #替换路径
         mv -f "$(filepath)" "$(rclone)"
         exit 0
     elif [ "$path" = "$downloadpath" ]   #文件夹
         then
-        mv -f "$(filepath)" "$(rclone)"/
-        rm -rf  "$(filepath)"
+        mv -f "$(filepath)" "$(rclone)"
         exit 0
     fi
 done
