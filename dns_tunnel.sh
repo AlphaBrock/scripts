@@ -413,7 +413,7 @@ install_hans(){
     echo "  hans has been started "
     echo "  run this command in your shell terminal"
     echo "---------------------------------------------"
-    echo -e "${green}sudo ./hans -c ${get_ip} -p $(passwd) ${plain}"
+    echo -e "${green}sudo ./hans -c '${get_ip}' -p '$(passwd)' ${plain}"
     echo "---------------------------------------------"
     echo -e "${yellow}Make sure your computer has been also compile hans${plain}"
     echo
