@@ -459,6 +459,29 @@ EOF
     chmod +x /etc/rc.local
 }
 
+#check eth0 network traffic for  ubuntu16.04
+add_crontab(){
+    cat > /root/checkTraffic.sh<<-EOF
+#! /bin/bash
+
+rxTraffic=$(ifconfig eth0|grep "bytes"|awk '{print $3}'|sed 's/(//g'| awk '{print int($0)}')
+
+maxTraffic=1000
+
+if [ "$rxTraffic" -gt "$maxTraffic" ]
+then
+#    echo "${rxTraffix}"
+    cd vpnserver
+    ./vpnserver stop
+    cd ~
+else
+#    echo "正常:$rxTraffic"
+    exit 0
+fi 
+EOF
+    echo "*/5 * * * * bash /root/checkTraffic.sh" >> /var/spool/cron/crontabs/root
+}
+
 #add system start
 sys_start(){
     if [[ x"${release}" == x"ubuntu" ]]; then
@@ -487,6 +510,7 @@ install_softether(){
     
     com_softether
     config_system_start
+    add_crontab
     sys_start
     
     clear
